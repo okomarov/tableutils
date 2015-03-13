@@ -7,7 +7,13 @@ if nargin < 3 || isempty(oldvars)
     % Rename all
     t.Properties.VariableNames = newvars; 
 else
-    if numel(oldvars) ~= numel(newvars)
+    % Check name count
+    if islogical(oldvars)
+        nold = nnz(oldvars);
+    else
+        nold = numel(oldvars);
+    end
+    if nold ~= numel(newvars)
         error('renameVarNames:numElementsMismatch','NEWVARS should have a name for each OLDVARS.')
     end
     
