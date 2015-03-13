@@ -28,6 +28,10 @@ function t = renameVarNames(t, newvars, oldvars)
 %
 % See also: TABLE, <a href="matlab:doc tableproperties"> TABLE PROPERTIES</a>
 
+% Author: Oleg Komarov (o.komarov11@imperial.ac.uk)
+% Tested on R2014b Win7 64bit
+% 13 Mar 2015 - Created
+
 % Wrap in a cell
 if isstring(newvars), newvars = {newvars}; end
 
@@ -57,8 +61,4 @@ else
         t.Properties.VariableNames(oldvars) = newvars;
     end
 end
-end
-
-function bool = isstring(s)
-bool = ischar(s) && isrow(s);
 end
