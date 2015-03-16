@@ -42,6 +42,8 @@ else
     % Check name count
     if islogical(oldvars)
         nold = nnz(oldvars);
+    elseif ischar(oldvars)
+        nold = 1;
     else
         nold = numel(oldvars);
     end
