@@ -1,5 +1,5 @@
 function t = convertColumn(t, newclass, vars)
-% CONVERTCOLUMN Renames variable names of a table
+% CONVERTCOLUMN Convert type of variable names in a table
 %
 %   CONVERTCOLUMN(T, NEWCLASS) Cast all variables (columns) of a table T to
 %                              NEWCLASS, e.g. 'uint8'.
