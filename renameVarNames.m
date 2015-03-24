@@ -43,7 +43,11 @@ else
     if islogical(oldvars)
         nold = nnz(oldvars);
     elseif ischar(oldvars)
-        nold = 1;
+        if oldvars == ':'
+            nold = width(t);
+        else
+            nold = 1;
+        end
     else
         nold = numel(oldvars);
     end
