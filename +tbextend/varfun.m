@@ -20,23 +20,24 @@ function b = varfun(fun,a,varargin)
 
 % Extract variable names option
 pos = find(strcmpi('VariableNames', varargin));
-if pos ~= 0
+if ~isempty(pos)
     outputNames = varargin{pos+1};
     varargin(pos:pos+1) = [];
 end
 
 % Call builtin method
-b = builtin('varfun', fun, a, varargin);
+b = varfun(fun, a, varargin{:});
 
 % If output not a table
 pos = find(strcmpi('OutputFormat', varargin));
-if pos ~= 0 && ~strcmpi(varargin{pos+1}, 'table')
+if ~isempty(pos) && ~strcmpi(varargin{pos+1}, 'table')
     return
 end
 
 % Extract eventual input variables
-pos = find(strcmpi('InputVariables', varargin));
-if pos ~= 0
+inputVars = ':';
+pos       = find(strcmpi('InputVariables', varargin));
+if ~isempty(pos)
     inputVars = varargin{pos+1};
     if isstring(inputVars) || iscellstr(inputVars)
         [~, inputVars] = ismember(inputVars, a.Properties.VariableNames);
