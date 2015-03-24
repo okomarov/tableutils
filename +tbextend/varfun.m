@@ -19,7 +19,7 @@ function b = varfun(fun,a,varargin)
 % 24 Mar 2015 - Created
 
 % Extract variable names option
-[~,pos] = ismember('VariableNames', varargin);
+pos = find(strcmpi('VariableNames', varargin));
 if pos ~= 0
     outputNames = varargin{pos+1};
     varargin(pos:pos+1) = [];
@@ -29,13 +29,13 @@ end
 b = builtin('varfun', fun, a, varargin);
 
 % If output not a table
-[~,pos] = ismember('OutputFormat', varargin);
+pos = find(strcmpi('OutputFormat', varargin));
 if pos ~= 0 && ~strcmpi(varargin{pos+1}, 'table')
     return
 end
 
 % Extract eventual input variables
-[~,pos] = ismember('InputVariables', varargin);
+pos = find(strcmpi('InputVariables', varargin));
 if pos ~= 0
     inputVars = varargin{pos+1};
     if isstring(inputVars) || iscellstr(inputVars)
