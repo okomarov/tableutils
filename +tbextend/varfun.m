@@ -4,13 +4,15 @@ function b = varfun(fun,a,varargin)
 % 
 %   Since TABLE/VARFUN automatically pre-pends the variable names
 %   with the function name, this wrapper additionally accepts the 
-%   name/value pair: 'RenameVariables', true(default)/false.
+%   name/value pair 'RenameVariables', false, to toggle off the 
+%   renaming.
+%   
 %   
 % Example:
 %   
 %   myVar = rand(10,1);
 %   tb    = table(myVar);
-%   tb    = varfun(@uint32, tb, 'RenameVariables', false)
+%   tb    = varfun(@(x) x/10, tb, 'RenameVariables', false)
 %
 % See also: TABLE
 
@@ -21,7 +23,7 @@ function b = varfun(fun,a,varargin)
 % Parse name/value pairs
 pnames = {'GroupingVariables' 'InputVariables' 'OutputFormat' 'RenameVariables'};
 dflts =  {                []               ':'        'table'             true };
-[groupVars,dataVars,outputFormat,renameVars,supplied] ...
+[groupVars,inputVars,outputFormat,renameVars,supplied] ...
     = matlab.internal.table.parseArgs(pnames, dflts, varargin{:});
 
 % Extarct RenameVariables from varargin
@@ -30,7 +32,7 @@ if supplied.RenameVariables
     varargin(pos:pos+1) = [];
 end
 
-% Call builtin method
+% Call table method
 b = varfun(fun, a, varargin{:});
 
 % Terminate if output not a table
@@ -42,13 +44,14 @@ if ~supplied.RenameVariables || renameVars
     return
 end
 
+outputNames = a.Properties.VariableNames;
+    
 % Variable names to keep
 if supplied.InputVariables
-    inputVars = ':';
-    if isnumeric(dataVars) || islogical(dataVars)
-        outputNames = a.Properties.VariableNames(dataVars);
+    if isnumeric(inputVars) || islogical(inputVars)
+        outputNames = a.Properties.VariableNames(inputVars);
     else
-        outputNames = dataVars;
+        outputNames = inputVars;
     end
 end
 if supplied.GroupingVariables
