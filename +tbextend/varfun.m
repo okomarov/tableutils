@@ -3,9 +3,9 @@ function b = varfun(fun,a,varargin)
 % VARFUN Apply a function to each variable of a table
 % 
 %   Since TABLE/VARFUN automatically pre-pends the variable names
-%   with the function name, this wrapper additionally accepts the 
-%   name/value pair 'RenameVariables', false, to toggle off the 
-%   renaming.
+%   with the function name, this wrapper can toggle off the renaming
+%   with the name/value pair:
+%       'RenameVariables' - false/true(default)
 %   
 %   
 % Example:
