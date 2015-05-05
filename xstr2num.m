@@ -9,9 +9,10 @@ function X = xstr2num(C,fmt)
 %
 %   NOTE: when you unstack a vertical table by a numeric ID, the resulting 
 %         VariableNames will be 'xNumbers'. This function, converts these 
-%         VariableNames back to their numeric counterpart. 
+%         VariableNames back to their initial numeric counterpart. 
 %
 % Example:
+%
 %   % Create unstacked table
 %   Id    = [12;1;4355]
 %   Date  = [20081103; 20081103; 20081104];
@@ -32,14 +33,21 @@ function X = xstr2num(C,fmt)
 %        20081103      2      1    NaN  
 %        20081104    NaN    NaN      3  
 %
-%   id = xstr2num(t.Properties.VariableNames);
+%   % Convert xNumber variable names to initial numeric ids
+%   id = xstr2num(t.Properties.VariableNames(2:end));
 %
 % See also: unstack, textscan
+
+% Author: Oleg Komarov (o.komarov11@imperial.ac.uk)
+% Tested on R2014b Win7 64bit
+% 21 Apr 2015 - Created
 
 if isstring(C)
     C = {C};
 end
 
+if nargin < 2, fmt = '%f'; end
+    
 X     = char(C(:));
 [m,n] = size(X);
 X     = [X'; repmat(' ',1,m)];
