@@ -13,5 +13,5 @@ function bool = isstring(A)
 % Tested on R2014a Win7 64bit
 % 26 Jun 2014 - Created
 
-bool = ischar(A) && isrow(A);
+bool = ischar(A) && (isrow(A) || isempty(A));
 end
