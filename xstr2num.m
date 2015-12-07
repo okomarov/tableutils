@@ -42,7 +42,7 @@ function X = xstr2num(C,fmt)
 % Tested on R2014b Win7 64bit
 % 21 Apr 2015 - Created
 
-if isstring(C)
+if isrowchar(C)
     C = {C};
 end
 
