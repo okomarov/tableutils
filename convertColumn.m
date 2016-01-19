@@ -4,17 +4,17 @@ function t = convertColumn(t, newclass, vars)
 %   CONVERTCOLUMN(T, NEWCLASS) Cast all variables (columns) of a table T to
 %                              NEWCLASS, e.g. 'uint8'.
 %
-%   CONVERTCOLUMN(T, NEWCLASS, VARS) Cast to NEWCLASS the variables   
+%   CONVERTCOLUMN(T, NEWCLASS, VARS) Cast to NEWCLASS the variables
 %                                    contained in VARS. VARS can be a
 %                                    string, a cell array of string, a
 %                                    vector of indices or a logical vector.
-%                                           
-%   
-%   NEWT = ... Returns a table with the converted variables 
+%
+%
+%   NEWT = ... Returns a table with the converted variables
 %
 %
 % Example:
-%   
+%
 %   t  = table(['M';'F';'M'], [45;32;34], {'NY';'CA';'MA'}, logical([1;0;0]),...
 %              'VariableNames', {'Gender' 'Age' 'State' 'Vote'});
 %   t1 = convertColumn(t, 'uint8','Age')
