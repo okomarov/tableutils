@@ -7,9 +7,9 @@ function X = xstr2num(C,fmt)
 %   XSTR2NUM(..., FMT) FMT is a numeric conversion specifier as accepted
 %                      by textscan(), e.g. '%d32'.
 %
-%   NOTE: when you unstack a vertical table by a numeric ID, the resulting 
-%         VariableNames will be 'xNumbers'. This function, converts these 
-%         VariableNames back to their initial numeric counterpart. 
+%   NOTE: when you unstack a vertical table by a numeric ID, the resulting
+%         VariableNames will be 'xNumbers'. This function, converts these
+%         VariableNames back to their initial numeric counterpart.
 %
 % Example:
 %
@@ -19,19 +19,19 @@ function X = xstr2num(C,fmt)
 %   Value = (1:3)';
 %
 %   t = table(Id, Date, Value)
-%   
+%
 %          Id       Date      Value
 %         ____    ________    _____
-%           12    20081103    1    
-%            1    20081103    2    
-%         4355    20081104    3  
+%           12    20081103    1
+%            1    20081103    2
+%         4355    20081104    3
 %
 %   t = unstack(t,'Id','Value')
 %
 %          Date      x1     x12    x4355
 %        ________    ___    ___    _____
-%        20081103      2      1    NaN  
-%        20081104    NaN    NaN      3  
+%        20081103      2      1    NaN
+%        20081104    NaN    NaN      3
 %
 %   % Convert xNumber variable names to initial numeric ids
 %   id = xstr2num(t.Properties.VariableNames(2:end));
@@ -47,7 +47,7 @@ if isrowchar(C)
 end
 
 if nargin < 2, fmt = '%f'; end
-    
+
 X     = char(C(:));
 [m,n] = size(X);
 X     = [X'; repmat(' ',1,m)];
