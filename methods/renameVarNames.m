@@ -1,5 +1,4 @@
 function t = renameVarNames(t, newvars, oldvars)
-
 % RENAMEVARNAMES Renames variable names of a table
 %
 %   RENAMEVARNAMES(T, NEWVARS) Rename all variable names of a table T to

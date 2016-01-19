@@ -1,15 +1,15 @@
 function b = varfun(fun,a,varargin)
 
 % VARFUN Apply a function to each variable of a table
-% 
+%
 %   Since TABLE/VARFUN automatically pre-pends the variable names
 %   with the function name, this wrapper can toggle off the renaming
 %   with the name/value pair:
 %       'RenameVariables' - false/true(default)
-%   
-%   
+%
+%
 % Example:
-%   
+%
 %   myVar = rand(10,1);
 %   tb    = table(myVar);
 %   tb    = varfun(@(x) x/10, tb, 'RenameVariables', false)
@@ -32,8 +32,8 @@ if supplied.RenameVariables
     varargin(pos:pos+1) = [];
 end
 
-% Call table method
-b = varfun(fun, a, varargin{:});
+% Call old table method
+b = varfunOld(fun, a, varargin{:});
 
 % Terminate if output not a table
 if supplied.OutputFormat && ~strcmpi(outputFormat, 'table')
@@ -45,7 +45,7 @@ if ~supplied.RenameVariables || renameVars
 end
 
 outputNames = a.Properties.VariableNames;
-    
+
 % Variable names to keep
 if supplied.InputVariables
     if isnumeric(inputVars) || islogical(inputVars)
@@ -64,7 +64,5 @@ if supplied.GroupingVariables
     outputNames = outputNames(~ismember(outputNames, groupVars));
 end
 
-% Rename variables
 b = renameVarNames(b, outputNames, inputVars);
-
 end
