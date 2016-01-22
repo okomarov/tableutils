@@ -15,6 +15,8 @@ switch mode
     otherwise
         error('MODE "%s" unrecognized.',mode)
 end
+% To force a refresh on methods(table)
+clear table
 end
 
 function install_()
@@ -52,6 +54,7 @@ try
     mycopyfile('classVarNames.m')
     mycopyfile('convertColumn.m')
     mycopyfile('renameVarNames.m')
+    mycopyfile('ismatrixlike.m')
 
     % Keep track of installation state
     fid = fopen(fullfile(tableUtilsFolder,'settings.json'),'w');
@@ -110,11 +113,12 @@ try
     mydelete('classVarNames.m')
     mydelete('convertColumn.m')
     mydelete('renameVarNames.m')
+    mydelete('ismatrixlike.m')
 
     delete(fullfile(tableUtilsFolder,'settings.json'))
 catch ME
     warning('Could not complete uninstallation. Try manual uninstallation.')
     rethrow(ME)
 end
-fprintf('Installation complete.\n')
+fprintf('Uninstalled.\n')
 end
