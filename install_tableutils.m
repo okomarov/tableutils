@@ -96,19 +96,19 @@ if ~exist(fullfile(tableUtilsFolder,'settings.json'),'file')
 end
 
 try
-    % Move back native functions
+    % Remove new methods
     tableFolder = fileparts(which('table'));
-    privfolder  = fullfile(tableFolder,'private');
-    movefun     = @(funname) movefile([fullfile(privfolder,funname)  'Old.m'],...
-                                      [fullfile(tableFolder,funname) '.m']);
-    list        = oldMethods();
+    mydelete    = @(funname) delete([fullfile(tableFolder, funname),'.m']);
+    list        = newMethods();
+    cellfun(@(x) mydelete(x), list)
+
+    % Move back native functions
+    privfolder = fullfile(tableFolder,'private');
+    movefun    = @(funname) movefile([fullfile(privfolder,funname)  'Old.m'],...
+                                     [fullfile(tableFolder,funname) '.m']);
+    list       = oldMethods();
     cellfun(@(x) movefun(x), list)
 
-    % Remove new methods
-    mydelete = @(funname) delete(fullfile(tableFolder, funname));
-    list     = newMethods();
-    cellfun(@(x) mydelete(x), list)
-    
     delete(fullfile(tableUtilsFolder,'settings.json'))
 catch ME
     warning('Could not complete uninstallation. Try manual uninstallation.')
