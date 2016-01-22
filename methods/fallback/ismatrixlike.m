@@ -4,9 +4,9 @@ function bool = ismatrixlike(t)
 % NOTE: it tests the condition size(table) == size(table{:,:}) without
 % actually extracting and concatenating the data.
 bool = true;
-sz   = size(t);
+sz = size(t);
 for ii = 1:sz(2)
-    [r,c] = size(t.data{ii});
+    [r,c] = size(t{:,ii});
     if c > 1
         bool = false;
         return
