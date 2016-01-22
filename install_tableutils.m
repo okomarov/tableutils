@@ -54,11 +54,11 @@ try
     mycopyfile('renameVarNames.m')
 
     % Keep track of installation state
-    fid = fopen(fullfile(tableUtilsFolder,'settings.json'));
+    fid = fopen(fullfile(tableUtilsFolder,'settings.json'),'w');
     fprintf(fid, '{"installation":"full"}');
     fclose(fid);
 
-catch
+catch ME
     % Use fallback methods
     s = ['could not copy methods to "%s".\n\n',...
          'Will use fallback methods:\n',...
@@ -69,7 +69,7 @@ catch
 
     answer = input('Continue [Y]/n: ','s');
     if ~(isempty(answer) || strcmpi(answer,'y'))
-        error('Installation aborted.')
+        rethrow(ME)
     end
 
     % Add methods
@@ -83,7 +83,7 @@ catch
     mycopyfile('renameVarNames.m')
 
     % Keep track of installation state
-    fid = fopen(fullfile(tableUtilsFolder,'settings.json'));
+    fid = fopen(fullfile(tableUtilsFolder,'settings.json'),'w');
     fprintf(fid, '{"installation":"fallback"}');
     fclose(fid);
 end
