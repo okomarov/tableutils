@@ -17,6 +17,7 @@ switch mode
 end
 % To force a refresh on methods(table)
 clear table
+rehash toolboxcache
 end
 
 function install_()
@@ -39,7 +40,7 @@ try
     % Backup old methods into +old folder
     privfolder = fullfile(tableFolder,'private');
     movefun    = @(funname) movefile([fullfile(tableFolder,funname) '.m'],...
-                                      [fullfile(privfolder,funname)  'Old.m']);
+                                     [fullfile(privfolder,funname)  'Old.m']);
     list       = oldMethods();
     cellfun(@(x) movefun(x), list)
 
@@ -47,7 +48,7 @@ try
     mycopyfile = @(funname) copyfile([fullfile(tableUtilsFolder,'methods',funname), '.m'],...
                                      [fullfile(tableFolder,funname), '.m']);
 
-    list       = unique([newMethods() oldMethods()]);
+    list = unique([newMethods() oldMethods()]);
     cellfun(@(x) mycopyfile(x), list)
 
     % Keep track of installation state
