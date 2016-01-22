@@ -122,5 +122,6 @@ list = {'table','disp','unstack','varfun'};
 end
 
 function list = newMethods()
-list = {'varfun','classVarNames','convertColumn','renameVarNames','ismatrixlike'};
+% Only those that have a fallback
+list = {'varfun','classVarNames','convertColumn','renameVarNames','ismatrixlike','transpose'};
 end
