@@ -1,10 +1,15 @@
-function classVarNames(tb)
+function out = classVarNames(tb)
 % CLASSVARNAMES Return class name of each column of a table
 
-tmp = table();
 vnames = tb.Properties.VariableNames(:)';
-for f = vnames
-    tmp.(char(f)) = class(tb.(char(f)));
+n      = numel(vnames);
+c      = cell(1,n);
+for ii = 1:n
+    c{ii} = class(tb.(vnames{ii}));
+end    
+if nargout == 0
+    disp(cell2table(c,'VariableNames',vnames));
+else
+    out = c;
 end
-disp(tmp)
 end
