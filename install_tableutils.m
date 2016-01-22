@@ -27,6 +27,11 @@ savepath
 path(currentPath)
 addpath(tableUtilsFolder)
 
+if exist(fullfile(tableUtilsFolder,'settings.json'),'file')
+    warning('table methods already installed. Uninstall and re-install if necessary.')
+    return
+end
+
 tableFolder = fileparts(which('table'));
 try
     % Backup old methods into +old folder
@@ -48,9 +53,14 @@ try
     mycopyfile('convertColumn.m')
     mycopyfile('renameVarNames.m')
 
+    % Keep track of installation state
+    fid = fopen(fullfile(tableUtilsFolder,'settings.json'));
+    fprintf(fid, '{"installation":"full"}');
+    fclose(fid);
+
 catch
     % Use fallback methods
-    s = ['Could not copy methods to "%s".\n\n',...
+    s = ['could not copy methods to "%s".\n\n',...
          'Will use fallback methods:\n',...
          '\t* buffered table disp() unavailable;\n',...
          '\t* fast unstack() unavailable;\n ',...
@@ -71,16 +81,21 @@ catch
     mycopyfile('classVarNames.m')
     mycopyfile('convertColumn.m')
     mycopyfile('renameVarNames.m')
+
+    % Keep track of installation state
+    fid = fopen(fullfile(tableUtilsFolder,'settings.json'));
+    fprintf(fid, '{"installation":"fallback"}');
+    fclose(fid);
 end
 fprintf('Installation complete.\n')
 end
 
 function uninstall_()
+% Remove path
+tableUtilsFolder = fileparts(mfilename('fullpath'));
+rmpath(tableUtilsFolder);
+
 try
-    % Remove path
-    tableUtilsFolder = fileparts(mfilename('fullpath'));
-    rmpath(tableUtilsFolder);
-    
     % Move back native functions
     tableFolder = fileparts(which('table'));
     privfolder  = fullfile(tableFolder,'private');
@@ -89,12 +104,14 @@ try
     movefun('disp')
     movefun('unstack')
     movefun('varfun')
-    
+
     % Remove new methods
     mydelete = @(funname) delete(fullfile(tableFolder, funname));
     mydelete('classVarNames.m')
     mydelete('convertColumn.m')
     mydelete('renameVarNames.m')
+
+    delete(fullfile(tableUtilsFolder,'settings.json'))
 catch ME
     warning('Could not complete uninstallation. Try manual uninstallation.')
     rethrow(ME)
