@@ -76,22 +76,28 @@ fprintf('Installation complete.\n')
 end
 
 function uninstall_()
-% Remove path
-tableUtilsFolder = fileparts(mfilename('fullpath'));
-rmpath(tableUtilsFolder);
-
-% Move back native functions
-tableFolder = fileparts(which('table'));
-privfolder  = fullfile(tableFolder,'private');
-movefun     = @(funname) movefile([fullfile(privfolder,funname)  'Old.m'],...
-                                  [fullfile(tableFolder,funname) '.m']);
-movefun('disp')
-movefun('unstack')
-movefun('varfun')
-
-% Remove new methods
-mydelete = @(funname) delete(fullfile(tableFolder, funname));
-mydelete('classVarNames.m')
-mydelete('convertColumn.m')
-mydelete('renameVarNames.m')
+try
+    % Remove path
+    tableUtilsFolder = fileparts(mfilename('fullpath'));
+    rmpath(tableUtilsFolder);
+    
+    % Move back native functions
+    tableFolder = fileparts(which('table'));
+    privfolder  = fullfile(tableFolder,'private');
+    movefun     = @(funname) movefile([fullfile(privfolder,funname)  'Old.m'],...
+        [fullfile(tableFolder,funname) '.m']);
+    movefun('disp')
+    movefun('unstack')
+    movefun('varfun')
+    
+    % Remove new methods
+    mydelete = @(funname) delete(fullfile(tableFolder, funname));
+    mydelete('classVarNames.m')
+    mydelete('convertColumn.m')
+    mydelete('renameVarNames.m')
+catch ME
+    warning('Could not complete uninstallation. Try manual uninstallation.')
+    rethrow(ME)
+end
+fprintf('Installation complete.\n')
 end
