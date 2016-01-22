@@ -98,6 +98,11 @@ function uninstall_()
 tableUtilsFolder = fileparts(mfilename('fullpath'));
 rmpath(tableUtilsFolder);
 
+if ~exist(fullfile(tableUtilsFolder,'settings.json'),'file')
+    warning('table methods are not installed.')
+    return
+end
+
 try
     % Move back native functions
     tableFolder = fileparts(which('table'));
