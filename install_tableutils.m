@@ -40,21 +40,15 @@ try
     privfolder = fullfile(tableFolder,'private');
     movefun    = @(funname) movefile([fullfile(tableFolder,funname) '.m'],...
                                       [fullfile(privfolder,funname)  'Old.m']);
-    movefun('disp')
-    movefun('unstack')
-    movefun('varfun')
+    list       = oldMethods();
+    cellfun(@(x) movefun(x), list)
 
     % Add methods
-    mycopyfile = @(funname) copyfile(fullfile(tableUtilsFolder,'methods',funname),...
-                                     fullfile(tableFolder,funname));
+    mycopyfile = @(funname) copyfile([fullfile(tableUtilsFolder,'methods',funname), '.m'],...
+                                     [fullfile(tableFolder,funname), '.m']);
 
-    mycopyfile('disp.m')
-    mycopyfile('unstack.m')
-    mycopyfile('varfun.m')
-    mycopyfile('classVarNames.m')
-    mycopyfile('convertColumn.m')
-    mycopyfile('renameVarNames.m')
-    mycopyfile('ismatrixlike.m')
+    list       = unique([newMethods() oldMethods()]);
+    cellfun(@(x) mycopyfile(x), list)
 
     % Keep track of installation state
     fid = fopen(fullfile(tableUtilsFolder,'settings.json'),'w');
@@ -78,12 +72,10 @@ catch ME
     % Add methods
     fallbackFolder = fullfile(tableUtilsFolder,'methods','fallback');
 
-    mycopyfile = @(funname) copyfile(fullfile(fallbackFolder,funname),...
-                                     fullfile(tableUtilsFolder,funname));
-    mycopyfile('varfun.m')
-    mycopyfile('classVarNames.m')
-    mycopyfile('convertColumn.m')
-    mycopyfile('renameVarNames.m')
+    mycopyfile = @(funname) copyfile([fullfile(fallbackFolder,funname),'.m'],...
+                                     [fullfile(tableUtilsFolder,funname),'.m']);
+    list       = oldMethods();
+    cellfun(@(x) mycopyfile(x), list)
 
     % Keep track of installation state
     fid = fopen(fullfile(tableUtilsFolder,'settings.json'),'w');
@@ -108,22 +100,27 @@ try
     tableFolder = fileparts(which('table'));
     privfolder  = fullfile(tableFolder,'private');
     movefun     = @(funname) movefile([fullfile(privfolder,funname)  'Old.m'],...
-        [fullfile(tableFolder,funname) '.m']);
-    movefun('disp')
-    movefun('unstack')
-    movefun('varfun')
+                                      [fullfile(tableFolder,funname) '.m']);
+    list        = oldMethods();
+    cellfun(@(x) movefun(x), list)
 
     % Remove new methods
     mydelete = @(funname) delete(fullfile(tableFolder, funname));
-    mydelete('classVarNames.m')
-    mydelete('convertColumn.m')
-    mydelete('renameVarNames.m')
-    mydelete('ismatrixlike.m')
-
+    list     = newMethods();
+    cellfun(@(x) mydelete(x), list)
+    
     delete(fullfile(tableUtilsFolder,'settings.json'))
 catch ME
     warning('Could not complete uninstallation. Try manual uninstallation.')
     rethrow(ME)
 end
 fprintf('Uninstalled.\n')
+end
+
+function list = oldMethods()
+list = {'table','disp','unstack','varfun'};
+end
+
+function list = newMethods()
+list = {'varfun','classVarNames','convertColumn','renameVarNames','ismatrixlike'};
 end
