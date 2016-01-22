@@ -30,40 +30,7 @@ function t = renameVarNames(t, newvars, oldvars)
 % Author: Oleg Komarov (o.komarov11@imperial.ac.uk)
 % Tested on R2014b Win7 64bit
 % 13 Mar 2015 - Created
+% 19 Jan 2016 - Use private method since we are installing into Matlab folders
 
-% Wrap in a cell
-if isrowchar(newvars), newvars = {newvars}; end
-
-if nargin < 3 || isempty(oldvars)
-    % Rename all
-    t.Properties.VariableNames = newvars;
-else
-    % Check name count
-    if islogical(oldvars)
-        nold = nnz(oldvars);
-    elseif ischar(oldvars)
-        if oldvars == ':'
-            nold = width(t);
-        else
-            nold = 1;
-        end
-    else
-        nold = numel(oldvars);
-    end
-    if nold ~= numel(newvars)
-        error('renameVarNames:numElementsMismatch','NEWVARS should have a name for each OLDVARS.')
-    end
-
-    % Delegate error checking
-    t(1,oldvars);
-
-    % Rename selected
-    if iscellstr(oldvars)
-        allvars = t.Properties.VariableNames;
-        [~,pos] = ismember(oldvars,allvars);
-        t.Properties.VariableNames(pos) = newvars;
-    else
-        t.Properties.VariableNames(oldvars) = newvars;
-    end
-end
+t = setVarNames(t,newvars,oldvars);
 end
