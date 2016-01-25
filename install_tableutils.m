@@ -1,21 +1,17 @@
-function install_tableutils(installto, mode)
+function install_tableutils(mode)
 % INSTALL_TABLEUTILS Adds path and new methods to table()
 %
 % NOTE: Old methods are backed up into @table\private\
 %       and appending 'Old' to the method name
 %
 % To uninstall, use install_tableutils('uninstall')
-if nargin < 1 || isempty(installto)
-    installto = fullfile(matlabroot,'local','myfiles','tableutils');
-    mkdir(installto)
-end
-if nargin < 2 || isempty(mode), mode = 'install'; end
 
+if nargin < 1 || isempty(mode), mode = 'install'; end
 switch mode
     case 'install'
-        install_(installto);
+        install_();
     case 'uninstall'
-        uninstall_(installto);
+        uninstall_();
     otherwise
         error('MODE "%s" unrecognized.',mode)
 end
@@ -24,25 +20,23 @@ clear table
 rehash toolboxcache
 end
 
-function install_(installto)
+function install_()
 % Add tableutils path and save, excluding previously added but not saved paths
-currentPath = path();
+currentPath      = path();
 path(pathdef())
-addpath(installto)
+tableUtilsFolder = fileparts(mfilename('fullpath'));
+addpath(tableUtilsFolder)
 savepath
 path(currentPath)
-addpath(installto)
+addpath(tableUtilsFolder)
 
-tableUtilsFolder = fileparts(mfilename('fullpath'));
-if exist(fullfile(installto,'settings.json'),'file')
+if exist(fullfile(tableUtilsFolder,'settings.json'),'file')
     warning('table methods already installed. Uninstall and re-install if necessary.')
     return
 end
 
 tableFolder = fileparts(which('table'));
 try
-    % Copy
-    
     % Backup old methods into +old folder
     privfolder = fullfile(tableFolder,'private');
     movefun    = @(funname) movefile([fullfile(tableFolder,funname) '.m'],...
@@ -92,12 +86,12 @@ end
 fprintf('Installation complete.\n')
 end
 
-function uninstall_(installto)
+function uninstall_()
 % Remove path
 tableUtilsFolder = fileparts(mfilename('fullpath'));
 rmpath(tableUtilsFolder);
 
-if ~exist(fullfile(installto,'settings.json'),'file')
+if ~exist(fullfile(tableUtilsFolder,'settings.json'),'file')
     warning('table methods are not installed.')
     return
 end
