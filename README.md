@@ -4,9 +4,9 @@ This set of Matlab functions fixes some methods of the `table()` class and exten
 ## Installation
 1. Unzip the archive;
 2. With Matlab, `cd` into the unzipped folder
-3. run `install_tableutils`
+3. run `install_tableutils` (or to disinstall `install_tableutils 'uninstall'` or `install_tableutils 'fulluninstall'`).
  
-:exclamation:**warning**:exclamation:: requires write permissions to `matlabroot/toolbox/matlab/datatypes/@table`. It overwrites some table methods, listed below, with fixed/enhanced versions. The old `table()` methods are backed up in its *private* subfolder and their name is suffixed with `Old`, e.g. `disp.m` becomes `dispOld.m`.
+:exclamation:**warning**:exclamation:: requires write permissions to `matlabroot/toolbox/local`.
 
 ## List of features
 * `disp()` - implements a **buffered** version of the native display method. Now, your pc will not freeze until the dawn of time if you forget a `;` in the command window after `t = table(1e7,1)`, which is only a 76 MB variable;
@@ -15,9 +15,11 @@ This set of Matlab functions fixes some methods of the `table()` class and exten
 * `renameVarNames()` - **new** method that renames variable names;
 * `convertColumn()` - **new** method that changes the class of each column (variable);
 * `classVarName` - **new** method that returns the class name of each column (variable).
+* `transpose()` - **allows** the transpose of a matrix-like table, i.e. `t'` or `t.'` (takes simple transpose).
+* `ismatrixlike()` - **new** method that returns `TRUE` if the table has one element per cell and all variables have the same class. 
 
 ## Other methods
-The following functions do not get copied over to the native `@table` folder and serve as general purpose utilities for the new table methods.
+Some general purpose utilities for the new table methods.
 
 * `isrowchar()` - Determines whether input is a string (1 by N char);
 * `in()` - Test for inclusion, i.e. `[]`,`[),``(]` or `()`, within some bounds;
