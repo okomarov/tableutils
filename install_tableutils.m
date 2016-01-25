@@ -41,6 +41,10 @@ savepath
 path(currentPath)
 addpath(destination)
 
+upath = strrep(userpath,';','');
+fprintf('Changing directory to "%s".\n', upath)
+cd(upath)
+
 fprintf('Installation complete.\n')
 end
 
