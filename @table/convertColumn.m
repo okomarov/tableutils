@@ -35,16 +35,21 @@ if nargin < 3 || isempty(vars)
     vars = ':';
 end
 
-indices = getVarIndices(t,vars);
+try
+    indices = getVarIndices(t,vars);
+catch
+    % Delegate error checking
+    tmp     = t(1,vars);
+    indices = tmp.Properties.VariableNames;
+end
 
 % Convert
 for ii = 1:numel(indices)
-    p = indices(ii);
+    v = indices(ii);
     try
-        t.data{p} = cast(t.data{p}, newclass);
-    catch ME
-        message = strrep(ME.message,'Conversion',sprintf('Conversion of ''%s''',v));
-        error('convertColumn:invalidCoversion', message);
+        t.data{v} = cast(t.data{v}, newclass);
+    catch
+        t.(char(v)) = cast(t.(char(v)), newclass);
     end
 end
 end
