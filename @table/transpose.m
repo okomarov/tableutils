@@ -1,7 +1,7 @@
 function t = transpose(t)
 
-varClasses = classVarNames(t);
-if ~ismatrixlike(t) || ~isequal(varClasses{:})
+
+if ~ismatrixlike(t)
     error('Only transpose() is defined on a matrix-like table with variables of the same class.')
 end
 
