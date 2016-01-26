@@ -32,5 +32,28 @@ function t = renameVarNames(t, newvars, oldvars)
 % 13 Mar 2015 - Created
 % 19 Jan 2016 - Use private method since we are installing into Matlab folders
 
-t = setVarNames(t,newvars,oldvars);
+% Rename all
+if nargin < 3 || isempty(oldvars) || strcmpi(oldvars,':')
+    oldvars = t.Properties.VariableNames;
+end
+try
+    t = setVarNames(t,newvars,oldvars);
+catch
+
+    % Delegate error checking
+    t(1,oldvars);
+
+    if isrowchar(oldvars)
+        oldvars = {oldvars};
+    end
+
+    % Rename selected
+    if iscellstr(oldvars)
+        allvars = t.Properties.VariableNames;
+        [~,pos] = ismember(oldvars,allvars);
+        t.Properties.VariableNames(pos) = newvars;
+    else
+        t.Properties.VariableNames(oldvars) = newvars;
+    end
+end
 end
