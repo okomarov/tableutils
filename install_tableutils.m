@@ -3,10 +3,12 @@ function install_tableutils(mode)
 %
 % To uninstall, use install_tableutils('uninstall')
 
+v = regexp(version,'R\d{4}\w','match');
+
 if nargin < 1 || isempty(mode), mode = 'install'; end
 switch mode
     case 'install'
-        install_();
+        install_(v{1});
     case {'uninstall','fulluninstall'}
         uninstall_(mode);
     otherwise
@@ -17,21 +19,33 @@ clear table
 rehash toolboxcache
 end
 
-function install_()
+function install_(v)
+switch v
+    case 'R2016a'
+        targetClass = '@table';
 
-% Create detination fodler
+    case 'R2016b'
+        targetClass = '@tabular';
+    
+    otherwise
+        targetClass = '@table';
+        warning('Your Matlab version might not be supported.\n')
+end
+
+% Create destination folder
 destination = fullfile(matlabroot,'toolbox','local','myfiles','tableutils');
 if ~isdir(destination)
     mkdir(destination);
 end
 
 % Copy native methods
-tableFolder = fullfile(matlabroot,'toolbox','matlab','datatypes','@table');
-copyfile(tableFolder, fullfile(destination,'@table'))
+classFolder = fullfile(matlabroot,'toolbox','matlab','datatypes',targetClass);
+copyfile(classFolder, fullfile(destination,targetClass))
 
 % Override and add new methods
 tableUtilsFolder = fileparts(mfilename('fullpath'));
-copyfile(tableUtilsFolder,destination)
+copyfile(fullfile(tableUtilsFolder, v),destination)
+copyfile(fullfile(tableUtilsFolder, '*.m'),destination)
 
 % Add and save path, excluding previously added but not saved paths
 currentPath = path();
