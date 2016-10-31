@@ -49,11 +49,11 @@ end
 VARNAME_FMT = [strongBegin '%s' strongEnd];
 
 if (t.rowDim.length > 0) && (t.varDim.length > 0)
-    indentSpaces   = repmat(' ', t.rowDim.length, INDENT);   % indent at left margin
+    SPACES_INDENT  = repmat(' ', t.rowDim.length, INDENT);   % indent at left margin
     SPACES_BETWEEN = repmat(' ', t.rowDim.length, BETWEEN); % space betweeen variables
     SPACES_WITHIN  = repmat(' ', t.rowDim.length, WITHIN);   % space between columns within a variable
     if ~t.rowDim.hasLabels
-        tblChars = indentSpaces;
+        tblChars = SPACES_INDENT;
     else
         rownameChars  = char(t.rowDim.labels);
         WIDTH_ROWNAME = size(rownameChars,2);
@@ -67,7 +67,7 @@ if (t.rowDim.length > 0) && (t.varDim.length > 0)
         % Preserve all the spaces using horzcat, not strcat.
         strongBeginRep = repmat(strongBegin,t.rowDim.length,1);
         strongEndRep = repmat(strongEnd,t.rowDim.length,1);
-        tblChars = [indentSpaces strongBeginRep rownameChars strongEndRep betweenSpaces];
+        tblChars = [SPACES_INDENT strongBeginRep rownameChars strongEndRep SPACES_BETWEEN];
     end
 
     rowpos = unique([1:CHUNK_SIZE:t.rowDim.length, t.rowDim.length+1]);
