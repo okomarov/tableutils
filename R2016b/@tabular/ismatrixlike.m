@@ -7,12 +7,12 @@ function bool = ismatrixlike(t)
 bool = true;
 
 varClasses = classVarNames(t);
-if ~isequal(varClasses{:})
+nvars = numel(varClasses);
+if nvars > 1 && ~isequal(varClasses{:})
     bool = false;
     return
 end
 
-nvars = numel(varClasses);
 for ii = 1:nvars
     [r,c] = size(t.data{ii});
     if c > 1
