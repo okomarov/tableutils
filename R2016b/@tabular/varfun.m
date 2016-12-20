@@ -139,7 +139,7 @@ catch
     end
 
     % Call old table method
-    b = varfunOld(fun, a, varargin{:});
+    b = varfun(fun, a, varargin{:});
 
     % Terminate if output not a table
     if supplied.OutputFormat && ~strcmpi(outputFormat, 'table')
